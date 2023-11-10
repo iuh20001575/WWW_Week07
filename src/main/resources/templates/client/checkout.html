@@ -1,0 +1,152 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link th:href="@{css/tiny-slider.css}" rel="stylesheet">
+    <link th:href="@{css/style.css}" rel="stylesheet">
+    <title>Checkout - Furni Shop</title>
+</head>
+
+<body>
+<!-- Start Header/Navigation -->
+<header th:insert="~{components/header}"></header>
+<!-- End Header/Navigation -->
+
+<div class="untree_co-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-5 mb-md-0">
+                <div class="col-md-12">
+                    <h2 class="h3 mb-3 text-black">Billing Details</h2>
+                    <div class="p-3 p-lg-5 border bg-white">
+                        <div class="form-group">
+                            <label for="c_country" class="text-black">Customer <span class="text-danger">*</span></label>
+                            <select id="c_country" class="form-control">
+                                <option value="0">Select a customer</option>
+                                <option th:each="customer : ${customers}" th:value="${customer.getId()}" th:text="${customer.getName()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                    <div class="p-3 p-lg-5 border bg-white">
+
+                        <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                        <div class="input-group w-75 couponcode-wrap">
+                            <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row mb-5">
+                    <div class="col-md-12">
+                        <h2 class="h3 mb-3 text-black">Your Order</h2>
+                        <div class="p-3 p-lg-5 border bg-white">
+                            <table class="table site-block-order-table mb-5">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="cart : ${carts}">
+                                        <td>
+                                            <span th:text="${cart.getProduct().getName()}"></span>
+                                            <strong class="mx-2">x</strong>
+                                            <span th:text="${cart.getQuantity()}"></span>
+                                        </td>
+                                        <td>
+                                            $
+                                            <span class="price" th:text="${cart.getProduct().getProductPrices().get(cart.getProduct().getProductPrices().size() - 1).getPrice() * cart.getQuantity()}"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+                                        <td class="text-black total-price">$350.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+                                        <td class="text-black font-weight-bold total-price"><strong>$350.00</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="border p-3 mb-3">
+                                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsebank" role="button" aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
+
+                                <div class="collapse" id="collapsebank">
+                                    <div class="py-2">
+                                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border p-3 mb-3">
+                                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsecheque" role="button" aria-expanded="false" aria-controls="collapsecheque">Cheque Payment</a></h3>
+
+                                <div class="collapse" id="collapsecheque">
+                                    <div class="py-2">
+                                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border p-3 mb-5">
+                                <h3 class="h6 mb-0"><a class="d-block" data-bs-toggle="collapse" href="#collapsepaypal" role="button" aria-expanded="false" aria-controls="collapsepaypal">Paypal</a></h3>
+
+                                <div class="collapse" id="collapsepaypal">
+                                    <div class="py-2">
+                                        <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </form> -->
+    </div>
+</div>
+
+<!-- Start Footer Section -->
+<footer class="footer-section" th:insert="~{components/footer}"></footer>
+<!-- End Footer Section -->
+
+<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{js/tiny-slider.js}"></script>
+<script th:src="@{js/custom.js}"></script>
+<script th:src="@{js/checkout.js}"></script>
+</body>
+
+</html>

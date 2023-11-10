@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.backend.models.Cart;
+import vn.edu.iuh.fit.backend.models.Customer;
 import vn.edu.iuh.fit.backend.models.Employee;
 import vn.edu.iuh.fit.backend.models.Product;
+import vn.edu.iuh.fit.backend.repositories.CustomerRepository;
 import vn.edu.iuh.fit.backend.services.CartServices;
 import vn.edu.iuh.fit.backend.services.EmployeeServices;
 import vn.edu.iuh.fit.backend.services.ProductServices;
@@ -26,6 +28,8 @@ public class ClientController {
     private EmployeeServices employeeServices;
     @Autowired
     private CartServices cartServices;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @GetMapping({"/", "/index"})
     public ModelAndView index(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, HttpSession session) {
@@ -76,12 +80,6 @@ public class ClientController {
             Employee employee = (Employee) object;
             List<Cart> carts = cartServices.findByEmployee(employee.getId());
 
-            carts.forEach(cart -> {
-                double price = cart.getProduct().getProductPrices().get(cart.getProduct().getProductPrices().size() - 1).getPrice();
-
-                System.out.println(price);
-            });
-
             modelAndView.addObject("employee", object);
             modelAndView.addObject("carts", carts);
 
@@ -117,6 +115,28 @@ public class ClientController {
             modelAndView.setViewName("redirect:/login");
         }
 
+
+        return modelAndView;
+    }
+
+    @GetMapping("/checkout")
+    public ModelAndView checkout(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Object object = session.getAttribute("employee");
+
+        if (object != null) {
+            Employee employee = (Employee) object;
+            List<Customer> customers = customerRepository.findAll();
+            List<Cart> carts = cartServices.findByEmployee(employee.getId());
+
+            modelAndView.addObject("employee", object);
+            modelAndView.addObject("customers", customers);
+            modelAndView.addObject("carts", carts);
+            modelAndView.setViewName("client/checkout");
+        } else {
+            modelAndView.setViewName("redirect:/login");
+        }
 
         return modelAndView;
     }

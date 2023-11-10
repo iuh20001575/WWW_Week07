@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap4" />
+
+  <!-- Bootstrap CSS -->
+  <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link th:href="@{css/tiny-slider.css}" rel="stylesheet">
+  <link th:href="@{css/style.css}" rel="stylesheet">
+  <title>Furni Shop</title>
+</head>
+
+<body>
+  <!-- Start Header/Navigation -->
+  <header th:insert="~{components/header}"></header>
+  <!-- End Header/Navigation -->
+
+  <div class="untree_co-section product-section before-footer-section">
+    <div class="container">
+      <div class="row">
+        <!-- Start Column 1 -->
+        <div th:each="product : ${products}" class="col-12 col-md-4 col-lg-3 mb-5">
+          <a class="product-item" href="#">
+            <img th:src="${product.getProductImageList().get(0).getPath()}" class="img-fluid product-thumbnail" alt="">
+            <h3 class="product-title" th:text="${product.getName()}"></h3>
+            <strong class="product-price">$
+              <span th:text="${product.getProductPrices().get(product.getProductPrices().size()-1).getPrice()}"></span>
+            </strong>
+
+            <span class="icon-cross">
+              <img th:src="@{images/cross.svg}" class="img-fluid" alt="">
+            </span>
+          </a>
+        </div>
+        <!-- End Column 1 -->
+      </div>
+
+      <!-- Start Pagination -->
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li th:class="page-item + ' ' + (${products.number == 0} ? disabled)">
+            <a class="page-link" th:href="@{/(page=${products.number}, size=${products.size})}">Previous</a>
+          </li>
+          <li class="page-item" th:each="page : ${pagesFirst}">
+            <a class="page-link" th:href="@{/(page=${page}, size=${products.size})}" th:text="${page}"></a>
+          </li>
+          <li class="page-item" th:if="${showFirst}"><span class="page-link">...</span></li>
+          <li th:class="page-item + ' ' + (${products.number + 1 == page} ? active)" th:each="page : ${pagesCurrent}">
+            <a class="page-link" th:href="@{/(page=${page}, size=${products.size})}" th:text="${page}"></a>
+          </li>
+          <li class="page-item" th:if="${showLast}"><span class="page-link">...</span></li>
+          <li class="page-item" th:each="page : ${pagesLast}">
+            <a class="page-link" th:href="@{/(page=${page}, size=${products.size})}" th:text="${page}"></a>
+          </li>
+          <li th:class="page-item + ' ' + (${products.totalPages == products.number + 1} ? disabled)">
+            <a class="page-link" th:href="@{/(page=${products.number + 2}, size=${products.size})}">Next</a>
+          </li>
+        </ul>
+      </nav>
+      <!-- End Pagination -->
+    </div>
+  </div>
+
+
+  <!-- Start Footer Section -->
+  <footer class="footer-section" th:insert="~{components/footer}"></footer>
+  <!-- End Footer Section -->
+
+  <script th:src="@{js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{js/tiny-slider.js}"></script>
+  <script th:src="@{js/custom.js}"></script>
+</body>
+
+</html>

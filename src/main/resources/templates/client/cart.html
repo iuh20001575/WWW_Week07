@@ -38,27 +38,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr th:each="cart : ${carts}">
                                 <td class="product-thumbnail">
-                                    <img th:src="@{images/product-1.png}" alt="Image" class="img-fluid">
+                                    <img th:src="${cart.getProduct().getProductImageList().get(0).getPath()}" alt="Image" class="img-fluid">
                                 </td>
                                 <td class="product-name">
-                                    <h2 class="h5 text-black">Product 1</h2>
+                                    <h2 class="h5 text-black" th:text="${cart.getProduct().getName()}"></h2>
                                 </td>
-                                <td>$49.00</td>
+                                <td>
+                                    $
+                                    <span class="product-price" th:text="${cart.getProduct().getProductPrices().get(cart.getProduct().getProductPrices().size() - 1).getPrice()}"></span>
+                                </td>
                                 <td>
                                     <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
 <!--                                        <div class="input-group-prepend">-->
 <!--                                            <button class="btn btn-outline-black decrease" type="button">&minus;</button>-->
 <!--                                        </div>-->
-                                        <input readonly type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                                        <input readonly type="text" class="form-control text-center quantity-amount product-quantity" th:value="${cart.getQuantity()}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
 <!--                                        <div class="input-group-append">-->
 <!--                                            <button class="btn btn-outline-black increase" type="button">&plus;</button>-->
 <!--                                        </div>-->
                                     </div>
 
                                 </td>
-                                <td>$49.00</td>
+                                <td>
+                                    $
+                                    <span th:text="${cart.getProduct().getProductPrices().get(cart.getProduct().getProductPrices().size() - 1).getPrice() * cart.getQuantity()}"></span>
+                                </td>
                                 <td><a href="#" class="btn btn-black btn-sm">X</a></td>
                             </tr>
                         </tbody>
@@ -74,7 +80,7 @@
                         <button class="btn btn-black btn-sm btn-block">Update Cart</button>
                     </div>
                     <div class="col-md-6">
-                        <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button>
+                        <a th:href="@{/}" class="btn btn-outline-black btn-sm btn-block">Continue Shopping</a>
                     </div>
                 </div>
                 <div class="row">
@@ -103,7 +109,7 @@
                                 <span class="text-black">Subtotal</span>
                             </div>
                             <div class="col-md-6 text-right">
-                                <strong class="text-black">$230.00</strong>
+                                <strong class="text-black total-price">$230.00</strong>
                             </div>
                         </div>
                         <div class="row mb-5">
@@ -111,13 +117,13 @@
                                 <span class="text-black">Total</span>
                             </div>
                             <div class="col-md-6 text-right">
-                                <strong class="text-black">$230.00</strong>
+                                <strong class="text-black total-price">$230.00</strong>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
-                                <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
+                                <button class="btn btn-black btn-lg py-3 btn-block">Proceed To Checkout</button>
                             </div>
                         </div>
                     </div>
@@ -134,6 +140,7 @@
 <script th:src="@{js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{js/tiny-slider.js}"></script>
 <script th:src="@{js/custom.js}"></script>
+<script th:src="@{js/cart.js}"></script>
 </body>
 
 </html>

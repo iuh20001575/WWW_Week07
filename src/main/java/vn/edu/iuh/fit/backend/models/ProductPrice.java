@@ -1,10 +1,14 @@
 package vn.edu.iuh.fit.backend.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import vn.edu.iuh.fit.backend.pks.ProductPricePK;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "product_price")
 @IdClass(ProductPricePK.class)
@@ -28,38 +32,6 @@ public class ProductPrice {
         this.product = product;
         this.price_date_time = price_date_time;
         this.price = price;
-        this.note = note;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public LocalDateTime getPrice_date_time() {
-        return price_date_time;
-    }
-
-    public void setPrice_date_time(LocalDateTime price_date_time) {
-        this.price_date_time = price_date_time;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
         this.note = note;
     }
 

@@ -8,6 +8,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class CartPK implements Serializable {
-    private long customer;
+    private long employee;
     private long product;
 }

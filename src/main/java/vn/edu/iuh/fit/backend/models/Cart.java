@@ -15,8 +15,8 @@ import vn.edu.iuh.fit.backend.pks.CartPK;
 public class Cart {
     @Id
     @ManyToOne
-    @JoinColumn(name = "cust_id")
-    private Customer customer;
+    @JoinColumn(name = "emp_id")
+    private Employee employee;
     @Id
     @ManyToOne
     @JoinColumn(name = "prod_id")

@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import vn.edu.iuh.fit.backend.enums.ProductStatus;
-import vn.edu.iuh.fit.backend.models.*;
+import vn.edu.iuh.fit.backend.models.Customer;
+import vn.edu.iuh.fit.backend.models.Product;
+import vn.edu.iuh.fit.backend.models.ProductImage;
+import vn.edu.iuh.fit.backend.models.ProductPrice;
 import vn.edu.iuh.fit.backend.repositories.*;
 
 import java.time.LocalDateTime;
@@ -31,7 +33,7 @@ public class WwwWeek07Application {
         SpringApplication.run(WwwWeek07Application.class, args);
     }
 
-//    @Bean
+    //    @Bean
     CommandLineRunner insertData() {
         return args -> {
             Faker faker = new Faker();
@@ -76,16 +78,6 @@ public class WwwWeek07Application {
                 );
 
                 customerRepository.save(customer);
-            }
-
-            for (int i = 1; i <= 10; i++) {
-                Cart cart = new Cart(
-                        new Customer(1L),
-                        productRepository.findById(Long.parseLong(String.valueOf(i))).get(),
-                        10
-                );
-
-                cartRepository.save(cart);
             }
         };
     }

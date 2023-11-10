@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import vn.edu.iuh.fit.backend.enums.EmployeeStatus;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "employee")
 @NamedQueries(
@@ -45,6 +47,10 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(long id) {
+        this.id = id;
+    }
+
     public Employee(String fullname, LocalDate dob, String email, String phone, String address, EmployeeStatus status) {
         this.fullname = fullname;
         this.dob = dob;
@@ -52,38 +58,6 @@ public class Employee {
         this.phone = phone;
         this.address = address;
         this.status = status;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setStatus(EmployeeStatus status) {
-        this.status = status;
-    }
-
-    public void setLstOrder(List<Order> lstOrder) {
-        this.lstOrder = lstOrder;
     }
 
     @Override

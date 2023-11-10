@@ -40,7 +40,7 @@
                         <tbody>
                             <tr>
                                 <td class="product-thumbnail">
-                                    <img src="images/product-1.png" alt="Image" class="img-fluid">
+                                    <img th:src="@{images/product-1.png}" alt="Image" class="img-fluid">
                                 </td>
                                 <td class="product-name">
                                     <h2 class="h5 text-black">Product 1</h2>
@@ -131,9 +131,9 @@
 <footer class="footer-section" th:insert="~{components/footer}"></footer>
 <!-- End Footer Section -->
 
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/tiny-slider.js"></script>
-<script src="js/custom.js"></script>
+<script th:src="@{js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{js/tiny-slider.js}"></script>
+<script th:src="@{js/custom.js}"></script>
 </body>
 
 </html>

@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import jakarta.persistence.*;
+import lombok.Getter;
 import vn.edu.iuh.fit.backend.enums.EmployeeStatus;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 @Entity
 @Table(name = "employee")
 @NamedQueries(
         @NamedQuery(name = "Employee.findAll", query = "select e from Employee e where e.status= ?1")
-//        ,@NamedQuery(name = "Employee.findXXXXXXX", query = "select e from Employee e where????")
-        //,...
 )
 public class Employee {
     @Id
@@ -54,64 +54,32 @@ public class Employee {
         this.status = status;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getFullname() {
-        return fullname;
     }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
-    public LocalDate getDob() {
-        return dob;
-    }
-
     public void setDob(LocalDate dob) {
         this.dob = dob;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public EmployeeStatus getStatus() {
-        return status;
-    }
-
     public void setStatus(EmployeeStatus status) {
         this.status = status;
-    }
-
-    public List<Order> getLstOrder() {
-        return lstOrder;
     }
 
     public void setLstOrder(List<Order> lstOrder) {

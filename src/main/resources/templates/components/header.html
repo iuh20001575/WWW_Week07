@@ -15,7 +15,10 @@
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <li><a class="nav-link" href="#"><img th:src="@{images/user.svg}" alt=""></a></li>
+                <li>
+                    <a th:if="${employee != null}" class="nav-link" href="#"><img th:src="@{images/user.svg}" alt=""></a>
+                    <a th:href="@{login}" th:if="${employee == null}" class="btn btn-primary">Login</a>
+                </li>
                 <li><a class="nav-link" th:href="cart"><img th:src="@{images/cart.svg}" alt=""></a></li>
             </ul>
         </div>

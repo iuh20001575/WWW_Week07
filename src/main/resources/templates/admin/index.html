@@ -54,7 +54,8 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                             Earnings (Monthly)</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${revenueByMonth}">
+                                        </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -72,7 +73,8 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                             Earnings (Annual)</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${revenueByYear}">
+                                        </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -111,7 +113,7 @@
                             <!-- Card Body -->
                             <div class="card-body">
                                 <div class="chart-area">
-                                    <canvas id="myAreaChart"></canvas>
+                                    <canvas id="chart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -152,10 +154,43 @@
 <!-- Page level plugins -->
 <script th:src="@{js/Chart.min.js}"></script>
 
-<!-- Page level custom scripts -->
-<script th:src="@{js/chart-area-demo.js}"></script>
-<script th:src="@{js/chart-pie-demo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    let delayed;
 
+    const ctx = document.getElementById('chart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [[${mapKey}]],
+            datasets: [{
+                label: 'Revenue',
+                data: [[${mapValue}]],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                        delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                    }
+                    return delay;
+                },
+            }
+        }
+    });
+</script>
 </body>
 
 </html>

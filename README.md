@@ -14,6 +14,7 @@
 - Login
 - Add product to cart
 - Order
+- Delete product (Soft delete)
 
 ## Home Page
 ### Show list products (Using pagination)

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Manage products</title>
 
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -41,7 +41,10 @@
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Products</h1>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="h3 mb-2 text-gray-800">Products</h1>
+                <a th:href="@{/dashboard/products/add}" class="btn btn-primary">Add product</a>
+            </div>
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
@@ -75,12 +78,14 @@
                                     <td th:text="${product.unit}"></td>
                                     <td th:text="${product.status}"></td>
                                     <td>
-                                        <a href="">Details</a>
+                                        <a href="">Detail</a>
                                     </td>
                                     <td>
-                                        <a href="">Update</a></td>
+                                        <a href="">Update</a>
+                                    </td>
                                     <td>
-                                        <a href="">Delete</a></td>
+                                        <a th:href="@{/dashboard/products/delete(pro-id=${product.getProduct_id()})}">Delete</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

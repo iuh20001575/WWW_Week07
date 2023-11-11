@@ -21,4 +21,8 @@ public class ProductServices {
 //        return productRepository.findAll(pageRequest);
         return productRepository.findToRender(ProductStatus.ACTIVE, pageRequest);
     }
+
+    public Integer softDelete(long productId) {
+        return productRepository.updateStatus(productId, ProductStatus.TERMINATED);
+    }
 }

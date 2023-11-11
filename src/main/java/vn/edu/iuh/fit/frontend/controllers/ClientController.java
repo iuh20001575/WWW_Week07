@@ -137,13 +137,19 @@ public class ClientController {
 
         if (object != null) {
             Employee employee = (Employee) object;
-            List<Customer> customers = customerRepository.findAll();
             List<Cart> carts = cartServices.findByEmployee(employee.getId());
 
             modelAndView.addObject("employee", object);
-            modelAndView.addObject("customers", customers);
-            modelAndView.addObject("carts", carts);
-            modelAndView.setViewName("client/checkout");
+
+            if (carts.isEmpty()) {
+                modelAndView.setViewName("redirect:/cart");
+            } else {
+                List<Customer> customers = customerRepository.findAll();
+
+                modelAndView.addObject("customers", customers);
+                modelAndView.addObject("carts", carts);
+                modelAndView.setViewName("client/checkout");
+            }
         } else {
             modelAndView.setViewName("redirect:/login");
         }
@@ -185,8 +191,10 @@ public class ClientController {
             order.setOrderDetails(orderDetails);
 
             try {
-                orderRepository.save(order);
-                cartRepository.deleteByEmployee(employee);
+                if (!orderDetails.isEmpty()) {
+                    orderRepository.save(order);
+                    cartRepository.deleteByEmployee(employee);
+                }
 
                 modelAndView.setViewName("redirect:/");
             } catch (Exception e) {

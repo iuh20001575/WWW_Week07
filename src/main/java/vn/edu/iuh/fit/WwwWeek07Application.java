@@ -6,17 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import vn.edu.iuh.fit.backend.enums.ProductStatus;
 import vn.edu.iuh.fit.backend.models.Customer;
 import vn.edu.iuh.fit.backend.models.Product;
 import vn.edu.iuh.fit.backend.models.ProductImage;
 import vn.edu.iuh.fit.backend.models.ProductPrice;
-import vn.edu.iuh.fit.backend.repositories.*;
+import vn.edu.iuh.fit.backend.repositories.CustomerRepository;
+import vn.edu.iuh.fit.backend.repositories.ProductImageRepository;
+import vn.edu.iuh.fit.backend.repositories.ProductPriceRepository;
+import vn.edu.iuh.fit.backend.repositories.ProductRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class WwwWeek07Application {
     @Autowired
     private ProductRepository productRepository;
@@ -26,8 +31,6 @@ public class WwwWeek07Application {
     private ProductImageRepository productImageRepository;
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
-    private CartRepository cartRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(WwwWeek07Application.class, args);

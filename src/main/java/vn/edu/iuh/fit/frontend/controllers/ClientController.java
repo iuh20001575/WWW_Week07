@@ -1,20 +1,24 @@
 package vn.edu.iuh.fit.frontend.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import vn.edu.iuh.fit.backend.models.Cart;
-import vn.edu.iuh.fit.backend.models.Customer;
-import vn.edu.iuh.fit.backend.models.Employee;
-import vn.edu.iuh.fit.backend.models.Product;
+import vn.edu.iuh.fit.backend.models.*;
+import vn.edu.iuh.fit.backend.repositories.CartRepository;
 import vn.edu.iuh.fit.backend.repositories.CustomerRepository;
+import vn.edu.iuh.fit.backend.repositories.OrderRepository;
 import vn.edu.iuh.fit.backend.services.CartServices;
 import vn.edu.iuh.fit.backend.services.EmployeeServices;
 import vn.edu.iuh.fit.backend.services.ProductServices;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -22,6 +26,8 @@ import java.util.stream.IntStream;
 @Controller
 @RequestMapping("/")
 public class ClientController {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
     @Autowired
     private ProductServices productServices;
     @Autowired
@@ -30,6 +36,10 @@ public class ClientController {
     private CartServices cartServices;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private CartRepository cartRepository;
 
     @GetMapping({"/", "/index"})
     public ModelAndView index(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, HttpSession session) {
@@ -134,6 +144,55 @@ public class ClientController {
             modelAndView.addObject("customers", customers);
             modelAndView.addObject("carts", carts);
             modelAndView.setViewName("client/checkout");
+        } else {
+            modelAndView.setViewName("redirect:/login");
+        }
+
+        return modelAndView;
+    }
+
+    @Transactional
+    @PostMapping("/order")
+    public ModelAndView order(@RequestParam("customer") Long customer, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Object object = session.getAttribute("employee");
+
+        if (object != null) {
+            Employee employee = (Employee) object;
+
+            List<Cart> carts = cartServices.findByEmployee(employee.getId());
+
+            Order order = new Order(
+                    LocalDateTime.now(),
+                    employee,
+                    customer == 0 ? null : new Customer(customer)
+            );
+
+            List<OrderDetail> orderDetails = new ArrayList<>();
+            carts.forEach(cart -> {
+                OrderDetail orderDetail = new OrderDetail(
+                        cart.getQuantity(),
+                        cart.getProduct().getPrice(),
+                        null,
+                        order,
+                        cart.getProduct()
+                );
+
+                orderDetails.add(orderDetail);
+            });
+
+            order.setOrderDetails(orderDetails);
+
+            try {
+                orderRepository.save(order);
+                cartRepository.deleteByEmployee(employee);
+
+                modelAndView.setViewName("redirect:/");
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                modelAndView.setViewName("redirect:/checkout");
+            }
         } else {
             modelAndView.setViewName("redirect:/login");
         }

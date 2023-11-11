@@ -1,12 +1,16 @@
 package vn.edu.iuh.fit.backend.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Getter
+@Setter
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +34,13 @@ public class Order {
     public Order() {
     }
 
+    public Order(LocalDateTime orderDate, Employee employee, Customer customer, List<OrderDetail> orderDetails) {
+        this.orderDate = orderDate;
+        this.employee = employee;
+        this.customer = customer;
+        this.orderDetails = orderDetails;
+    }
+
     public Order(long order_id, LocalDateTime orderDate, Employee employee, Customer customer) {
         this.order_id = order_id;
         this.orderDate = orderDate;
@@ -37,44 +48,10 @@ public class Order {
         this.customer = customer;
     }
 
-    public long getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(long order_id) {
-        this.order_id = order_id;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
+    public Order(LocalDateTime orderDate, Employee employee, Customer customer) {
         this.orderDate = orderDate;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public List<OrderDetail> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
     }
 
     @Override

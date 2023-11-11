@@ -34,6 +34,12 @@ public class OrderDetail {
         this.product = product;
     }
 
+    public OrderDetail(double quantity, double price, String note, Product product) {
+        this.quantity = quantity;
+        this.price = price;
+        this.note = note;
+        this.product = product;
+    }
 
     public double getQuantity() {
         return quantity;

@@ -30,14 +30,14 @@
 
 <div class="untree_co-section">
     <div class="container">
-        <div class="row">
+        <form method="post" th:action="@{/order}" class="row">
             <div class="col-md-6 mb-5 mb-md-0">
                 <div class="col-md-12">
                     <h2 class="h3 mb-3 text-black">Billing Details</h2>
                     <div class="p-3 p-lg-5 border bg-white">
                         <div class="form-group">
                             <label for="c_country" class="text-black">Customer <span class="text-danger">*</span></label>
-                            <select id="c_country" class="form-control">
+                            <select name="customer" id="c_country" class="form-control">
                                 <option value="0">Select a customer</option>
                                 <option th:each="customer : ${customers}" th:value="${customer.getId()}" th:text="${customer.getName()}"></option>
                             </select>
@@ -127,14 +127,14 @@
                             </div>
 
                             <div class="form-group">
-                                <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='thankyou.html'">Place Order</button>
+                                <button class="btn btn-black btn-lg py-3 btn-block" type="submit">Place Order</button>
                             </div>
 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <!-- </form> -->
     </div>
 </div>

@@ -23,4 +23,8 @@ public class Cart {
     private Product product;
     @Column(name = "qty", nullable = false)
     private int quantity;
+
+    public double getTotalPrice() {
+        return product.getPrice() * quantity;
+    }
 }

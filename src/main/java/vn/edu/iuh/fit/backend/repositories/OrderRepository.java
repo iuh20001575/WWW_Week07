@@ -23,4 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT cast(o.orderDate as DATE), sum(od.quantity * od.price) FROM Order o join o.orderDetails od where o.orderDate >= :startDate and o.orderDate <= :endDate group by cast(o.orderDate as DATE)")
     List<Object[]> calcRevenueByTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query("SELECT o.employee, sum(od.quantity * od.price) FROM Order o join o.orderDetails od where o.orderDate >= :startDate and o.orderDate <= :endDate group by o.employee")
+    List<Object[]> calcRevenueByEmployeeInTimePeriod(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

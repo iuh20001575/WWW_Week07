@@ -2,6 +2,8 @@ package vn.edu.iuh.fit.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import vn.edu.iuh.fit.backend.dto.EmployeeDTO;
+import vn.edu.iuh.fit.backend.models.Employee;
 import vn.edu.iuh.fit.backend.repositories.OrderRepository;
 
 import java.sql.Date;
@@ -49,6 +51,20 @@ public class OrderServices {
                 LocalDateTime.of(endDate, LocalTime.MAX)
         ).parallelStream().collect(Collectors.toMap(
                 (Object[] o) -> ((Date) o[0]).toLocalDate(),
+                (Object[] o) -> ((Number) o[1]).doubleValue()
+        ));
+    }
+
+    public Map<EmployeeDTO, Double> calcRevenueByEmployeeInTimePeriod(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.calcRevenueByEmployeeInTimePeriod(
+                LocalDateTime.of(startDate, LocalTime.MIN),
+                LocalDateTime.of(endDate, LocalTime.MAX)
+        ).parallelStream().collect(Collectors.toMap(
+                (Object[] o) -> {
+                    Employee employee = (Employee) o[0];
+
+                    return new EmployeeDTO(employee.getId(), employee.getFullname());
+                },
                 (Object[] o) -> ((Number) o[1]).doubleValue()
         ));
     }

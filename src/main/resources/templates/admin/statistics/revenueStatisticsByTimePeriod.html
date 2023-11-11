@@ -13,6 +13,7 @@
     <!-- Custom fonts for this template-->
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
@@ -39,10 +40,17 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
+        <form class="p-3 d-flex align-items-center gap-3">
+            <label class="mb-0">
+                <input type="text" name="daterange" th:value="${daterange != null ? daterange : ''}" />
+            </label>
+            <button type="submit" class="btn btn-primary">Statistic</button>
+        </form>
+
         <!-- Area Chart -->
-        <div class="card shadow mb-4">
+        <div th:if="${mapKey != null}" class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Revenue statistics by day</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Revenue statistics by time period</h6>
             </div>
             <canvas id="chart"></canvas>
         </div>
@@ -66,7 +74,17 @@
 <script th:src="@{/js/Chart.min.js}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script th:inline="javascript">
+    $(function() {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        }, function(start, end) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+
     const ctx = document.getElementById('chart');
 
     console.log([[${mapValue}]])

@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.backend.repositories.OrderRepository;
 import vn.edu.iuh.fit.backend.services.OrderServices;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -20,6 +23,7 @@ public class AdminController {
     @Autowired
     private OrderServices orderServices;
     private final NumberFormat format = NumberFormat.getCurrencyInstance();
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     @GetMapping("")
     public ModelAndView home() {
@@ -48,6 +52,27 @@ public class AdminController {
         modelAndView.addObject("mapValue", map.values());
 
         modelAndView.setViewName("admin/statistics/revenueStatisticsByDay");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/statistics/by-time-period")
+    public ModelAndView statisticByTimePeriod(@RequestParam(name = "daterange", required = false) String dateRange) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (dateRange != null) {
+            String[] split = dateRange.split(" - ");
+            LocalDate startDate = LocalDate.parse(split[0], formatter);
+            LocalDate endDate = LocalDate.parse(split[1], formatter);
+
+            Map<LocalDate, Double> map = orderServices.calcRevenueByTimePeriod(startDate, endDate);
+
+            modelAndView.addObject("mapKey", map.keySet());
+            modelAndView.addObject("mapValue", map.values());
+            modelAndView.addObject("daterange", dateRange);
+        }
+
+        modelAndView.setViewName("admin/statistics/revenueStatisticsByTimePeriod");
 
         return modelAndView;
     }

@@ -4,8 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.backend.repositories.OrderRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -35,5 +41,15 @@ public class OrderServices {
                 TreeMap::new);
 
         return list.parallelStream().collect(collector);
+    }
+
+    public Map<LocalDate, Double> calcRevenueByTimePeriod(LocalDate startDate, LocalDate endDate) {
+        return orderRepository.calcRevenueByTimePeriod(
+                LocalDateTime.of(startDate, LocalTime.MIN),
+                LocalDateTime.of(endDate, LocalTime.MAX)
+        ).parallelStream().collect(Collectors.toMap(
+                (Object[] o) -> ((Date) o[0]).toLocalDate(),
+                (Object[] o) -> ((Number) o[1]).doubleValue()
+        ));
     }
 }

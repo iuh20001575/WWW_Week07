@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import vn.edu.iuh.fit.backend.dto.EmployeeDTO;
-import vn.edu.iuh.fit.backend.models.Employee;
 import vn.edu.iuh.fit.backend.repositories.OrderRepository;
 import vn.edu.iuh.fit.backend.services.OrderServices;
 
@@ -51,7 +50,11 @@ public class AdminController {
 
         Map<Integer, Double> map = orderServices.calcRevenueByDay();
 
-        modelAndView.addObject("mapKey", map.keySet());
+        modelAndView.addObject("mapKey", map.keySet().parallelStream().map(day -> {
+            YearMonth yearMonth = YearMonth.now();
+
+            return LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), day);
+        }).collect(Collectors.toList()));
         modelAndView.addObject("mapValue", map.values());
 
         modelAndView.setViewName("admin/statistics/revenueStatisticsByDay");

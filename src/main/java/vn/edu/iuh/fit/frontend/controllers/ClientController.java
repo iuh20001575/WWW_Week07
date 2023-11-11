@@ -110,11 +110,20 @@ public class ClientController {
         } else {
             Employee employee = (Employee) object;
 
-            Cart cart = new Cart(
-                    employee,
-                    new Product(productId),
-                    1
-            );
+            Optional<Cart> cartOptional = cartServices.findByEmployeeAndProduct(employee.getId(), productId);
+            Cart cart;
+
+            if (cartOptional.isPresent()) {
+                cart = cartOptional.get();
+
+                cart.setQuantity(cart.getQuantity() + 1);
+            } else {
+                cart = new Cart(
+                        employee,
+                        new Product(productId),
+                        1
+                );
+            }
 
             try {
                 cartRepository.save(cart);

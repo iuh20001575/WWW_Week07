@@ -7,6 +7,7 @@ import vn.edu.iuh.fit.backend.enums.ProductStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "product")
@@ -78,5 +79,16 @@ public class Product {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return product_id == product.product_id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(product_id);
+    }
 }

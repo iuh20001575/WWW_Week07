@@ -32,10 +32,12 @@
             <strong class="product-price">$
               <span th:text="${product.getProductPrices().get(product.getProductPrices().size()-1).getPrice()}"></span>
             </strong>
-
-            <span class="icon-cross">
-              <img th:src="@{images/cross.svg}" class="img-fluid" alt="">
-            </span>
+            <form th:action="@{cart}" method="post">
+              <input type="hidden" name="product-id" th:value="${product.getProduct_id()}">
+              <button type="submit" class="icon-cross">
+                <img th:src="@{images/cross.svg}" class="img-fluid" alt="">
+              </button>
+            </form>
           </a>
         </div>
         <!-- End Column 1 -->

@@ -84,7 +84,7 @@ public class ClientController {
         ModelAndView modelAndView = new ModelAndView();
         Object object = session.getAttribute("employee");
 
-        if (object== null) {
+        if (object == null) {
             modelAndView.setViewName("redirect:/login");
         } else {
             Employee employee = (Employee) object;
@@ -94,6 +94,35 @@ public class ClientController {
             modelAndView.addObject("carts", carts);
 
             modelAndView.setViewName("client/cart");
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("/cart")
+    public ModelAndView addCart(@RequestParam(name = "product-id") Long productId, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Object object = session.getAttribute("employee");
+
+        if (object == null) {
+            modelAndView.setViewName("redirect:/login");
+        } else {
+            Employee employee = (Employee) object;
+
+            Cart cart = new Cart(
+                    employee,
+                    new Product(productId),
+                    1
+            );
+
+            try {
+                cartRepository.save(cart);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+
+            modelAndView.setViewName("redirect:/");
         }
 
         return modelAndView;

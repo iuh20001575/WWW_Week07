@@ -37,4 +37,18 @@ public class AdminController {
         modelAndView.setViewName("admin/index");
         return modelAndView;
     }
+
+    @GetMapping("/statistics/by-day")
+    public ModelAndView statisticByDay() {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Map<Integer, Double> map = orderServices.calcRevenueByDay();
+
+        modelAndView.addObject("mapKey", map.keySet());
+        modelAndView.addObject("mapValue", map.values());
+
+        modelAndView.setViewName("admin/statistics/revenueStatisticsByDay");
+
+        return modelAndView;
+    }
 }

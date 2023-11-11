@@ -24,4 +24,16 @@ public class OrderServices {
 
         return list.parallelStream().collect(map);
     }
+
+    public Map<Integer, Double> calcRevenueByDay() {
+        YearMonth yearMonth = YearMonth.now();
+        List<Object[]> list = orderRepository.calcRevenueByDay(yearMonth.getYear(), yearMonth.getMonthValue());
+
+        Collector<Object[], ?, TreeMap<Integer, Double>> collector = Collectors.toMap((Object[] o) -> ((Number) o[0]).intValue(),
+                (Object[] o) -> ((Number) o[1]).doubleValue(),
+                Double::sum,
+                TreeMap::new);
+
+        return list.parallelStream().collect(collector);
+    }
 }

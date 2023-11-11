@@ -34,6 +34,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(long order_id) {
+        this.order_id = order_id;
+    }
+
     public Order(LocalDateTime orderDate, Employee employee, Customer customer, List<OrderDetail> orderDetails) {
         this.orderDate = orderDate;
         this.employee = employee;
@@ -61,7 +65,6 @@ public class Order {
                 ", orderDate=" + orderDate +
                 ", employee=" + employee +
                 ", customer=" + customer +
-                ", orderDetails=" + orderDetails +
                 '}';
     }
 }

@@ -67,7 +67,7 @@
                                     $
                                     <span th:text="${cart.getProduct().getProductPrices().get(cart.getProduct().getProductPrices().size() - 1).getPrice() * cart.getQuantity()}"></span>
                                 </td>
-                                <td><a href="#" class="btn btn-black btn-sm">X</a></td>
+                                <td><a th:href="@{/cart/delete(pro-id=${cart.getProduct().getProduct_id()})}" class="btn btn-black btn-sm">X</a></td>
                             </tr>
                             </tbody>
                         </table>

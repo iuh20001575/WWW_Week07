@@ -19,4 +19,6 @@ public interface CartRepository extends JpaRepository<Cart, CartPK> {
     void deleteByEmployee(Employee employee);
 
     Optional<Cart> findByEmployeeAndProduct(Employee employee, Product product);
+
+    void deleteByEmployeeAndProduct(Employee employee, Product product);
 }

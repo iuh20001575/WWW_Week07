@@ -28,9 +28,10 @@
         <div th:each="product : ${products}" class="col-12 col-md-4 col-lg-3 mb-5">
           <a class="product-item" href="#">
             <img th:src="${product.getProductImageList().get(0).getPath()}" class="img-fluid product-thumbnail" alt="">
+            <img th:src="@{/images/{img}(img=${product.getProductImageList().get(0).getPath()})}" class="img-fluid product-thumbnail" alt="">
             <h3 class="product-title" th:text="${product.getName()}"></h3>
             <strong class="product-price">$
-              <span th:text="${product.getProductPrices().get(product.getProductPrices().size()-1).getPrice()}"></span>
+              <span th:remove="tag" th:text="${#numbers.formatCurrency(product.getProductPrices().get(product.getProductPrices().size()-1).getPrice())}">$100</span>
             </strong>
             <form th:action="@{cart}" method="post">
               <input type="hidden" name="product-id" th:value="${product.getProduct_id()}">

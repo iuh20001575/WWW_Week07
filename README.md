@@ -17,6 +17,7 @@
 - Add product to cart
 - Order
 - Delete product (Soft delete)
+- Delete product in cart
 
 ## Home Page
 ### Show list products (Using pagination)
@@ -32,11 +33,11 @@
 ![Alt text](https://thaoanhhaa1.github.io/www_images/Lab07_ProductRPage.jpeg "Manage products page")
 
 ## Add Product Page
-### Add product and add price
+### Add product, add price and add image
 ![Alt text](https://thaoanhhaa1.github.io/www_images/Lab07_ProductCPage.jpeg "Add Product Page")
 
 ## Update Product Page
-### Update product and add price
+### Update product, add price and add image
 ![Alt text](https://thaoanhhaa1.github.io/www_images/Lab07_ProductUPage.jpeg "Update Product Page")
 
 ## CRUD Page

@@ -8,15 +8,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vn.edu.iuh.fit.backend.enums.ProductStatus;
 import vn.edu.iuh.fit.backend.models.Product;
+import vn.edu.iuh.fit.backend.models.ProductImage;
 import vn.edu.iuh.fit.backend.models.ProductPrice;
+import vn.edu.iuh.fit.backend.repositories.ProductImageRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductPriceRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductRepository;
 import vn.edu.iuh.fit.backend.services.ProductServices;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Controller
@@ -26,12 +34,16 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
     private final ProductPriceRepository productPriceRepository;
+    private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
+    private final ProductImageRepository productImageRepository;
 
     public ProductController(ProductServices productServices, ProductRepository productRepository,
-                             ProductPriceRepository productPriceRepository) {
+                             ProductPriceRepository productPriceRepository,
+                             ProductImageRepository productImageRepository) {
         this.productServices = productServices;
         this.productRepository = productRepository;
         this.productPriceRepository = productPriceRepository;
+        this.productImageRepository = productImageRepository;
     }
 
     @GetMapping({"", "/"})
@@ -40,7 +52,7 @@ public class ProductController {
         int sizeNum = size.orElse(10);
 
         Page<Product> products = productRepository.findAll(
-                PageRequest.of(pageNum-1, sizeNum)
+                PageRequest.of(pageNum - 1, sizeNum)
         );
 
 //        Start Handle Pagination
@@ -87,7 +99,7 @@ public class ProductController {
 
     @Transactional
     @PostMapping("")
-    public String add_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice) {
+    public String add_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice, @RequestParam("image") MultipartFile file) {
         try {
             product.setProduct_id(0);
 
@@ -97,6 +109,17 @@ public class ProductController {
             productPrice.setPrice_date_time(LocalDateTime.now());
 
             productPriceRepository.save(productPrice);
+
+            String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
+
+            String fileName = product.getProduct_id() + "_" + UUID.randomUUID() + '.' + split[split.length - 1];
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+
+            Files.write(fileNameAndPath, file.getBytes());
+
+            ProductImage productImage = new ProductImage(fileName, product);
+
+            productImageRepository.save(productImage);
 
             return "redirect:/dashboard/products";
         } catch (Exception exception) {
@@ -126,13 +149,24 @@ public class ProductController {
 
     @Transactional
     @PostMapping("/update")
-    public String update_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice) {
+    public String update_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice, @RequestParam("image") MultipartFile file) {
         try {
             productRepository.save(product);
 
             productPrice.setProduct(product);
             productPrice.setPrice_date_time(LocalDateTime.now());
             productPriceRepository.save(productPrice);
+
+            String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
+
+            String fileName = product.getProduct_id() + "_" + UUID.randomUUID() + '.' + split[split.length - 1];
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
+
+            Files.write(fileNameAndPath, file.getBytes());
+
+            ProductImage productImage = new ProductImage(fileName, product);
+
+            productImageRepository.save(productImage);
 
             return "redirect:/dashboard/products";
         } catch (Exception e) {

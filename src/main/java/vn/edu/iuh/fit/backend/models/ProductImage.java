@@ -23,6 +23,11 @@ public class ProductImage {
     public ProductImage() {
     }
 
+    public ProductImage(String path, Product product) {
+        this.path = path;
+        this.product = product;
+    }
+
     public ProductImage(String path, String alternative) {
         this.path = path;
         this.alternative = alternative;

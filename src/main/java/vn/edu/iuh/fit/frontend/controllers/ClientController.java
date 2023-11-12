@@ -13,6 +13,7 @@ import vn.edu.iuh.fit.backend.models.*;
 import vn.edu.iuh.fit.backend.repositories.CartRepository;
 import vn.edu.iuh.fit.backend.repositories.CustomerRepository;
 import vn.edu.iuh.fit.backend.repositories.OrderRepository;
+import vn.edu.iuh.fit.backend.repositories.ProductRepository;
 import vn.edu.iuh.fit.backend.services.CartServices;
 import vn.edu.iuh.fit.backend.services.EmployeeServices;
 import vn.edu.iuh.fit.backend.services.ProductServices;
@@ -40,6 +41,8 @@ public class ClientController {
     private OrderRepository orderRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @GetMapping({"/", "/index"})
     public ModelAndView index(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, HttpSession session) {
@@ -243,6 +246,24 @@ public class ClientController {
             modelAndView.setViewName("redirect:/login");
         }
 
+        return modelAndView;
+    }
+
+    @Transactional
+    @GetMapping("/cart/delete")
+    public ModelAndView delete(@RequestParam("pro-id") Long productId, HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        Object object = session.getAttribute("employee");
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (object != null && productOptional.isPresent()) {
+            Employee employee = (Employee) object;
+
+            cartRepository.deleteByEmployeeAndProduct(employee, productOptional.get());
+        }
+
+        modelAndView.setViewName("redirect:/cart");
         return modelAndView;
     }
 }

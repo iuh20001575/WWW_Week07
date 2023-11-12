@@ -45,7 +45,7 @@
                 <h1 class="h3 mb-2 text-gray-800">Products</h1>
             </div>
 
-            <form th:action="@{/dashboard/products/update}" method="post">
+            <form th:action="@{/dashboard/products/update}" method="post" enctype="multipart/form-data">
                 <input type="hidden" th:value="${product.product_id}" th:field="${product.product_id}">
                 <div class="row">
                     <div class="col-6 mb-3">
@@ -77,6 +77,12 @@
                     <div class="col-6 mb-3">
                         <label for="Price" class="form-label">Price</label>
                         <input th:field="${productPrice.price}" type="number" class="form-control" id="Price" placeholder="Price">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label for="Image" class="form-label">Image</label>
+                        <input name="image" type="file" accept="image/*" class="form-control" id="Image" placeholder="Image">
                     </div>
                 </div>
                 <div class="text-center mb-3">

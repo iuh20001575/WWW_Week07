@@ -16,12 +16,14 @@ import vn.edu.iuh.fit.backend.models.ProductPrice;
 import vn.edu.iuh.fit.backend.repositories.ProductImageRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductPriceRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductRepository;
+import vn.edu.iuh.fit.backend.services.ProductPriceServices;
 import vn.edu.iuh.fit.backend.services.ProductServices;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,14 +38,16 @@ public class ProductController {
     private final ProductPriceRepository productPriceRepository;
     private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\images";
     private final ProductImageRepository productImageRepository;
+    private final ProductPriceServices productPriceServices;
 
     public ProductController(ProductServices productServices, ProductRepository productRepository,
                              ProductPriceRepository productPriceRepository,
-                             ProductImageRepository productImageRepository) {
+                             ProductImageRepository productImageRepository, ProductPriceServices productPriceServices) {
         this.productServices = productServices;
         this.productRepository = productRepository;
         this.productPriceRepository = productPriceRepository;
         this.productImageRepository = productImageRepository;
+        this.productPriceServices = productPriceServices;
     }
 
     @GetMapping({"", "/"})
@@ -135,16 +139,35 @@ public class ProductController {
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
-            ProductPrice productPrice = new ProductPrice();
+            Optional<ProductPrice> productPrice = productPriceServices.findNewPrice(id);
 
             model.addAttribute("product", product);
-            model.addAttribute("productPrice", productPrice);
+            model.addAttribute("productPrice", productPrice.get());
             model.addAttribute("productStatuses", ProductStatus.values());
 
             return "admin/products/update";
         }
 
         return "redirect:/dashboard/products";
+    }
+
+    @GetMapping("/{id}/detail")
+    public String detail(@PathVariable("id") long id, Model model) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isEmpty()) {
+            return "redirect:/dashboard/products";
+        }
+
+        Product product = productOptional.get();
+        List<ProductImage> productImages = productImageRepository.findByProduct(product);
+        List<ProductPrice> productPrices = productPriceRepository.findByProduct(product);
+
+        model.addAttribute("product", product);
+        model.addAttribute("productImages", productImages);
+        model.addAttribute("productPrices", productPrices);
+
+        return "admin/products/detail";
     }
 
     @Transactional
@@ -155,6 +178,7 @@ public class ProductController {
 
             productPrice.setProduct(product);
             productPrice.setPrice_date_time(LocalDateTime.now());
+            productPrice.setNote(null);
             productPriceRepository.save(productPrice);
 
             String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");

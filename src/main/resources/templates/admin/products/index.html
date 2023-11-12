@@ -78,7 +78,7 @@
                                     <td th:text="${product.unit}"></td>
                                     <td th:text="${product.status}"></td>
                                     <td>
-                                        <a href="">Detail</a>
+                                        <a th:href="@{/dashboard/products/{id}/detail(id=${product.getProduct_id()})}">Detail</a>
                                     </td>
                                     <td>
                                         <a th:href="@{/dashboard/products/{id}(id=${product.getProduct_id()})}">Update</a>

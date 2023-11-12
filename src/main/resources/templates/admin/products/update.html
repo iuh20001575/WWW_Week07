@@ -76,13 +76,24 @@
                     </div>
                     <div class="col-6 mb-3">
                         <label for="Price" class="form-label">Price</label>
-                        <input th:field="${productPrice.price}" type="number" class="form-control" id="Price" placeholder="Price">
+                        <input th:field="${productPrice.price}" th:data="${#numbers.formatDecimal(productPrice.getPrice(), 1, 2)}" type="number" class="form-control" id="Price" placeholder="Price">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6 mb-3">
                         <label for="Image" class="form-label">Image</label>
-                        <input name="image" type="file" accept="image/*" class="form-control" id="Image" placeholder="Image">
+                        <div>
+                            <div class="d-flex justify-content-center">
+                                <img id="selectedImage" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
+                                     alt="example placeholder" style="width: 100%" />
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-primary btn-rounded mt-3">
+                                    <label class="form-label text-white m-1" for="Image">Choose file</label>
+                                    <input name="image" type="file" class="form-control d-none" id="Image" onchange="displaySelectedImage(event, 'selectedImage')" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center mb-3">
@@ -118,7 +129,26 @@
 
 <!-- Custom scripts for all pages-->
 <script th:src="@{/js/sb-admin-2.min.js}"></script>
+<script>
+    function displaySelectedImage(event, elementId) {
+        const selectedImage = document.getElementById(elementId);
+        const fileInput = event.target;
 
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+
+    const price = document.querySelector('[name="price"]')
+
+    price.value = price.getAttribute('data');
+</script>
 </body>
 
 </html>

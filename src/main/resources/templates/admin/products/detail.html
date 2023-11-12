@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+    <main>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input disabled th:value="${product.getProduct_id()}" type="text" class="form-control" id="id" placeholder="Manufacture">
+            </div>
+            <div class="col-6 mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input disabled th:field="${product.name}" type="text" class="form-control" id="name" placeholder="Manufacture">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <h4>Product Image</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Path</th>
+                            <th>Alternate</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="productImage : ${productImages}">
+                                <td th:text="${productImage.getImage_id()}"></td>
+                                <td th:text="${productImage.path}"></td>
+                                <td th:text="${productImage.alternative}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>Product Price</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>Date time</th>
+                            <th>Note</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="productPrice : ${productPrices}">
+                            <td th:text="${productPrice.price}"></td>
+                            <td th:text="${productPrice.price_date_time}"></td>
+                            <td th:text="${productPrice.note}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

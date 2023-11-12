@@ -1,0 +1,10 @@
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (1, 'Apt. 836 049 Ward Crescent, North Angel, TN 09963', 'hilton.veum@gmail.com', 'Hong Schaefer', '563-614-5137');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (2, 'Suite 301 3721 Joaquin Burg, Erasmoshire, CO 24955', 'star.buckridge@gmail.com', 'Mrs. Jarod Wiegand', '(610) 863-1381');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (3, '8515 Kub Haven, Cortezland, MS 69987', 'jerri.lang@yahoo.com', 'Jenine Quitzon', '541.856.7796');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (4, '34425 Donnelly Crest, Davestad, NH 12487', 'omer.schuppe@yahoo.com', 'James Kautzer', '334.602.1029');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (5, '72108 Lonnie Centers, Port Walter, SD 68542', 'sanora.kozey@gmail.com', 'Stacee Ward', '520-206-0765');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (6, '86125 Ellsworth Drive, East Wonda, FL 84600', 'neomi.schmidt@hotmail.com', 'Roderick O\'Keefe', '956-601-3740');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (7, 'Suite 573 580 Keven Points, North Erma, ND 28117', 'jeneva.kuhlman@gmail.com', 'Graham Fadel I', '(973) 904-2526');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (8, '36920 Gaylord Avenue, Port Sidney, GA 73407', 'shayne.stracke@yahoo.com', 'Quentin Pollich', '785.715.0080');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (9, '626 Kutch Avenue, East Jordanburgh, NH 85385', 'emilee.bashirian@yahoo.com', 'Sommer Towne III', '(812) 760-3663');
+INSERT INTO e_shopping.customer (cust_id, address, email, cust_name, phone) VALUES (10, '644 Hermann Forge, South See, ND 97520', 'everette.altenwerth@gmail.com', 'Kary Hermann', '907-737-7578');

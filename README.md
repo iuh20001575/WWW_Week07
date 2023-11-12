@@ -3,6 +3,7 @@
 - [Cart Page](#cart-page)
 - [Checkout Page](#checkout-page)
 - [Manage Product Page](#manage-product-page)
+- [Add Product Page](#add-product-page)
 - [CRUD Page](#)
 - [Dashboard](#dashboard)
 - [Order statistics by day](#order-statistics-by-day)
@@ -28,6 +29,10 @@
 
 ## Manage Product Page
 ![Alt text](https://thaoanhhaa1.github.io/www_images/Lab07_ProductRPage.jpeg "Manage products page")
+
+## Add Product Page
+### Add product and add price
+![Alt text](https://thaoanhhaa1.github.io/www_images/Lab07_ProductRPage.jpeg "Add Product Page")
 
 ## CRUD Page
 

@@ -1,18 +1,21 @@
 package vn.edu.iuh.fit.frontend.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import vn.edu.iuh.fit.backend.enums.ProductStatus;
 import vn.edu.iuh.fit.backend.models.Product;
+import vn.edu.iuh.fit.backend.models.ProductPrice;
+import vn.edu.iuh.fit.backend.repositories.ProductPriceRepository;
 import vn.edu.iuh.fit.backend.repositories.ProductRepository;
 import vn.edu.iuh.fit.backend.services.ProductServices;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -21,10 +24,14 @@ import java.util.stream.IntStream;
 public class ProductController {
     private final ProductServices productServices;
     private final ProductRepository productRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+    private final ProductPriceRepository productPriceRepository;
 
-    public ProductController(ProductServices productServices, ProductRepository productRepository) {
+    public ProductController(ProductServices productServices, ProductRepository productRepository,
+                             ProductPriceRepository productPriceRepository) {
         this.productServices = productServices;
         this.productRepository = productRepository;
+        this.productPriceRepository = productPriceRepository;
     }
 
     @GetMapping({"", "/"})
@@ -64,5 +71,38 @@ public class ProductController {
         productServices.softDelete(productId);
 
         return "redirect:/dashboard/products";
+    }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        Product product = new Product();
+        ProductPrice productPrice = new ProductPrice();
+
+        model.addAttribute("product", product);
+        model.addAttribute("productPrice", productPrice);
+        model.addAttribute("productStatuses", ProductStatus.values());
+
+        return "admin/products/add";
+    }
+
+    @Transactional
+    @PostMapping("")
+    public String add_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice) {
+        try {
+            product.setProduct_id(0);
+
+            productRepository.save(product);
+
+            productPrice.setProduct(product);
+            productPrice.setPrice_date_time(LocalDateTime.now());
+
+            productPriceRepository.save(productPrice);
+
+            return "redirect:/dashboard/products";
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+        }
+
+        return "redirect:/dashboard/products/add";
     }
 }

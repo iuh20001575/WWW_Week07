@@ -105,4 +105,40 @@ public class ProductController {
 
         return "redirect:/dashboard/products/add";
     }
+
+    @GetMapping("/{id}")
+    public String update(@PathVariable("id") Long id, Model model) {
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            ProductPrice productPrice = new ProductPrice();
+
+            model.addAttribute("product", product);
+            model.addAttribute("productPrice", productPrice);
+            model.addAttribute("productStatuses", ProductStatus.values());
+
+            return "admin/products/update";
+        }
+
+        return "redirect:/dashboard/products";
+    }
+
+    @Transactional
+    @PostMapping("/update")
+    public String update_P(@ModelAttribute("product") Product product, @ModelAttribute("productPrice") ProductPrice productPrice) {
+        try {
+            productRepository.save(product);
+
+            productPrice.setProduct(product);
+            productPrice.setPrice_date_time(LocalDateTime.now());
+            productPriceRepository.save(productPrice);
+
+            return "redirect:/dashboard/products";
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return "redirect:/dashboard/products/" + product.getProduct_id();
+    }
 }

@@ -81,7 +81,7 @@
                                         <a href="">Detail</a>
                                     </td>
                                     <td>
-                                        <a href="">Update</a>
+                                        <a th:href="@{/dashboard/products/{id}(id=${product.getProduct_id()})}">Update</a>
                                     </td>
                                     <td>
                                         <a th:href="@{/dashboard/products/delete(pro-id=${product.getProduct_id()})}">Delete</a>
